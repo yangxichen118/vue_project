@@ -10,11 +10,11 @@
           <li><a href="#">English</a></li>
           <li><a href="#" class="weixin"></a></li>
           <li><a href="#" class="weibo"></a></li>
-          <li><a href="login.html" class="h_login">登录</a></li>
+          <li><router-link to="/login"  class="h_login">登录</router-link></li>
           <li><em>|</em></li>
           <li><router-link to="/register" class="h_register">注册</router-link></li>
-          <!--<li class="top_user"><a href="">admin</a></li>-->
-          <!--<li class="top_quit"><a href="">退出</a></li>-->
+          <li class="top_user"><a href="">admin</a></li>
+          <li class="top_quit"><a href="">退出</a></li>
         </ul>
         <div class="search clearfloat">
           <button type="button"></button>

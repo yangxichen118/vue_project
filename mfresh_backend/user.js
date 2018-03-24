@@ -85,26 +85,52 @@ router.post("/phoneExist",(req,res)=>{
 
 
 
+//登录
+
+router.post("/login",(req,res)=>{
+    var uname = req.body.uname;
+    var upwd = req.body.upwd;
+
+    var uid;
+    var sql = "SELECT uid,uname,phone FROM mf_user WHERE (uname=？ AND upwd=？) OR (phone=？ AND upwd=？";
+    pool.query(sql,[uname,upwd],(err,result)=>{
+        if(err) throw err;
+
+        if(result.length>0){
+            res.json({code:1,uname:result.uname,upwd:result.upwd,phone:result.phone,msg:"登录成功"});
+            uid = result.insertId;
+        }else{
+            res.json({code:400,msg:"用户名或密码错误请检查"});
+        }
+    });
+});
+
+
+
 
 
 
 const svgCaptcha=require('svg-captcha');
 
 router.get('/captcha',(req,res)=>{
-
     var captcha=svgCaptcha.create();
-
-   req.session.captcha=captcha.text;
-   console.log(req.session.captcha);
+    console.log(111);
+    req.session.captcha=captcha.text;
+    console.log(req.session.captcha);
     // res.setHeader('Content-Type', 'image/svg+xml');
     // res.write(String(data));
     // res.end();
-    var txt=req.session.captcha;
+   // var txt=req.session.captcha;
 
     res.type('svg');
     //res.status(200).send(captcha.data);
-   res.status(200).send({code:txt,data:captcha.data});
+   res.status(200).send(captcha.data);
 });
+
+
+
+
+
 
 /**
  *根据新闻ID返回新闻详情
