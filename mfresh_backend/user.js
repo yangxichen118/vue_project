@@ -25,6 +25,28 @@ module.exports = router;
  *}
  */
 
+
+//登录
+
+router.post("/login",(req,res)=>{
+    var uname = req.query.uname;
+    var upwd = req.query.upwd;
+
+    var uid;
+    var sql = "select uid,uname FROM mf_user WHERE uname = ? AND upwd = ? ";
+    pool.query(sql,[uname,upwd],(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(result.length>0){
+            console.log(result);
+            res.json({code:1,uname:result.uname,uid:result.uid,msg:"登录成功"});
+
+        }else{
+            res.json({code:400,msg:"用户名或密码错误请检查"});
+        }
+    });
+});
+
 router.get('/register', (req, res) => {
     var uname = req.query.uname;
     var upwd = req.query.upwd;
@@ -59,7 +81,6 @@ router.post("/unameExist",(req,res)=>{
         if(result.length>0){
             res.json({code:1,msg:"exist"});
 
-
         }else{
             res.json({code:500,msg:"non-exist"});
 
@@ -85,25 +106,7 @@ router.post("/phoneExist",(req,res)=>{
 
 
 
-//登录
 
-router.post("/login",(req,res)=>{
-    var uname = req.body.uname;
-    var upwd = req.body.upwd;
-
-    var uid;
-    var sql = "SELECT uid,uname,phone FROM mf_user WHERE (uname=？ AND upwd=？) OR (phone=？ AND upwd=？";
-    pool.query(sql,[uname,upwd],(err,result)=>{
-        if(err) throw err;
-
-        if(result.length>0){
-            res.json({code:1,uname:result.uname,upwd:result.upwd,phone:result.phone,msg:"登录成功"});
-            uid = result.insertId;
-        }else{
-            res.json({code:400,msg:"用户名或密码错误请检查"});
-        }
-    });
-});
 
 
 
